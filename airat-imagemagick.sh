@@ -17,21 +17,24 @@ WATER=water.png
 # Создаем папки для результатов
 mkdir result-small -p
 mkdir result-water -p
-# Папка с исходными файлами (должна называться source)
-cd source
 
-# Уменьшаем размер изображений и сохраняем в папку result-small
-# Имена файлов и пропорции сохранятся. Размер по ширине: 1024
-
-for f in *.*; do
-    convert "$f" -resize $SIZE -quality $QUALITY ../result-small/"$f"
-done
-cd ..
+# Уменьшаем размер и качество изображений и сохраняем в папку result-small
+# Имена файлов и пропорции сохранятся.
+if [ -d "source" ]; then
+    # Папка с исходными изображениями (должна называться source)
+    cd source
+    for f in *.*; do
+        convert "$f" -resize $SIZE -quality $QUALITY ../result-small/"$f"
+    done
+    cd ..
+else
+    echo "There is no source folder!"
+    exit 1
+fi
 
 # Накладываем водяной знак на фотки и сохраняем в папку result-water
 # Водяной знак подготовить заранее и положить в корень папки
 # Имя файла водяного знака должно быть water.png
-
 if [ -f "$WATER" ]; then
     cd result-small
     for f in *.*; do
@@ -40,4 +43,5 @@ if [ -f "$WATER" ]; then
     echo "Done!"
 else
     echo "There is no $WATER file!"
+    exit 2
 fi
