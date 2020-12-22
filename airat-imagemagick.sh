@@ -13,6 +13,8 @@ QUALITY=85
 SIZE=1024
 # Имя файла водяного знака (без пробелов):
 WATER=water.png
+# Имя папки с исходными изображениями
+SOURCE=images
 
 # Создаем папки для результатов
 mkdir result-small -p
@@ -20,15 +22,14 @@ mkdir result-water -p
 
 # Уменьшаем размер и качество изображений и сохраняем в папку result-small
 # Имена файлов и пропорции сохранятся.
-if [ -d "source" ]; then
-    # Папка с исходными изображениями (должна называться source)
-    cd source
+if [ -d $SOURCE ]; then
+    cd $SOURCE
     for f in *.*; do
         convert "$f" -resize $SIZE -quality $QUALITY ../result-small/"$f"
     done
     cd ..
 else
-    echo "There is no source folder!"
+    echo "There is no $SOURCE folder with source images!"
     exit 1
 fi
 
