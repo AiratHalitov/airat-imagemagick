@@ -5,21 +5,26 @@
 # License: GPLv3
 
 # Скрипт уменьшает размер фотографий из папки source и накладывает водяной знак.
-# Имена файлов сохранятся. 
+# Имена файлов сохранятся.
+
+# Изменение качества в процентах:
+QUALITY=85
+# Изменение размера с сохранением пропорций (размер по ширине в пикселях):
+SIZE=1024
+# Имя файла водяного знака (без пробелов):
+WATER=water.png
 
 # Создаем папки для результатов
 mkdir result-small -p
 mkdir result-water -p
-
 # Папка с исходными файлами (должна называться source)
 cd source
 
 # Уменьшаем размер изображений и сохраняем в папку result-small
 # Имена файлов и пропорции сохранятся. Размер по ширине: 1024
-# Изменение качества в процентах: (-quality 85)
 
 for f in *.*; do
-    convert "$f" -resize 1024 -quality 85 ../result-small/"$f"
+    convert "$f" -resize $SIZE -quality $QUALITY ../result-small/"$f"
 done
 cd ..
 
@@ -27,10 +32,12 @@ cd ..
 # Водяной знак подготовить заранее и положить в корень папки
 # Имя файла водяного знака должно быть water.png
 
-if [ -f water.png ]; then
+if [ -f "$WATER" ]; then
     cd result-small
     for f in *.*; do
-        composite -gravity center ../water.png "$f" ../result-water/"$f"
+        composite -gravity center ../"$WATER" "$f" ../result-water/"$f"
     done
+    echo "Done!"
+else
+    echo "There is no $WATER file!"
 fi
-echo "Done!"
