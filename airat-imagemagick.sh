@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Author: Airat Halitov
+# GitHub: https://github.com/AiratHalitov/airat-imagemagick
+# License: GPLv3
+
 # Скрипт уменьшает размер фотографий из папки source и накладывает водяной знак.
 # Имена файлов сохранятся. 
 
